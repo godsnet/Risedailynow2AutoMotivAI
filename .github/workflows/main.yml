@@ -1,42 +1,28 @@
-Step 1: The "Invisible" Security ( .gitignore )
-Create this file first to make sure no secret files ever accidentally leak to the public.
- * In your repo, click "creating a new file".
- * Name it .gitignore.
- * Paste this inside:
-   *.pem
-*.json
-__pycache__/
-.env
-
-Step 2: The Folder Structure
-To match the professional blueprint, you need a few folders. Since GitHub doesn't like empty folders, we create them by adding a tiny file called .gitkeep inside them.
- * Create scripts/.gitkeep (For your Python logic)
- * Create assets/.gitkeep (For your images/videos)
- * Create output/.gitkeep (For the finished renders)
-Step 3: The Automation "Brain" ( GitHub Action )
-Create a file at .github/workflows/main.yml. This tells GitHub to wake up and run your code.
 name: AutoMotivAI Automation
+
 on:
   schedule:
     - cron: '0 9 * * *' # 9 AM daily
   workflow_dispatch:
+
 jobs:
   run-bot:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - setup-python: '3.9'
-      - run: pip install -r requirements.txt
-      - run: python main.py
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        
+      - name: Run script
+        run: python main.py
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
-
-Summary of your "Healthy" Repository
-| Component | Status | Action Needed |
-|---|---|---|
-| Secrets | ⚠️ Pending | Add ID, SECRET, and REFRESH_TOKEN to Settings. |
-| Folder Structure | ❌ Missing | Create scripts/, assets/, and .github/. |
-| Main Script | ❌ Missing | Create main.py using the OAuth logic. |
-| Dependencies | ❌ Missing | Create requirements.txt. |
+description: 
