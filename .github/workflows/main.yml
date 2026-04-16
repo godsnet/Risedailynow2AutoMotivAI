@@ -10,21 +10,18 @@ on:
               runs-on: ubuntu-latest
                   steps:
                         - uses: actions/checkout@v3
-
-                                    - name: Set up Python
-                                            uses: actions/setup-python@v4
-                                                    with:
-                                                              python-version: '3.9'
-
-                                                                              - name: Install dependencies
-                                                                                      run: pip install -r requirements.txt
-
-                                                                                                    - name: Run script
-                                                                                                            run: python main.py
-                                                                                                                    env:
-                                                                                                                              YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
-                                                                                                                                        YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
-                                                                                                                                                  YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
-                                                                                                                                                            GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-                                                                                                                                                                      ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
-                                                                                                                                                                      
+                              - name: Set up Python
+                                      uses: actions/setup-python@v4
+                                              with:
+                                                        python-version: '3.9'
+                                                              - name: Install dependencies
+                                                                      run: pip install -r requirements.txt
+                                                                            - name: Run script
+                                                                                    run: python main.py
+                                                                                            env:
+                                                                                                      YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+                                                                                                                YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+                                                                                                                          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+                                                                                                                                    GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+                                                                                                                                              ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+                                                                                                                                              
