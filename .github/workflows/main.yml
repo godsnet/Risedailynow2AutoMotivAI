@@ -2,82 +2,29 @@ name: AutoMotivAI Automation
 
 on:
   schedule:
-    - cron: '0 9 * * *' # 9 AM daily
-  workflow_dispatch:
+      - cron: '0 9 * * *' # 9 AM daily
+        workflow_dispatch:
 
-jobs:
-  run-bot:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
-          
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-        
-      - name: Run script
-        run: python main.py
-        env:
-          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
-          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
-          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
-description: 
-import feedparser
-import os
-import google.generativeai as genai
-from elevenlabs import generate, save, set_api_key
+        jobs:
+          run-bot:
+              runs-on: ubuntu-latest
+                  steps:
+                        - uses: actions/checkout@v3
 
-# 1. Setup Keys - Using environment variables for security
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-set_api_key(os.getenv("ELEVENLABS_API_KEY"))
+                                    - name: Set up Python
+                                            uses: actions/setup-python@v4
+                                                    with:
+                                                              python-version: '3.9'
 
-def get_trending_ai_news():
-    # RSS Feed for Google News - AI Topic
-    rss_url = "https://news.google.com/rss/search?q=artificial+intelligence+when:24h&hl=en-US&gl=US&ceid=US:en"
-    feed = feedparser.parse(rss_url)
-    
-    if feed.entries:
-        top_story = feed.entries[0]
-        return {
-            "title": top_story.title,
-            "link": top_story.link
-        }
-    return None
+                                                                              - name: Install dependencies
+                                                                                      run: pip install -r requirements.txt
 
-def generate_viral_script(news_title):
-    model = genai.GenerativeModel('gemini-pro')
-    prompt = f"""
-    Topic: {news_title}
-    Task: Write a 45-second 'Tech News' TikTok script. 
-    Tone: Punchy, urgent, and insightful (The 'Breakdown' style).
-    Structure: 
-    - Hook: Why this matters to the viewer.
-    - Meat: 2 key facts about the news.
-    - Outro: A 'What do you think?' question.
-    Constraint: NO emojis, NO intro 'Hey guys'. Just the spoken words.
-    """
-    response = model.generate_content(prompt)
-    return response.text
-
-def text_to_speech(script, filename):
-    audio = generate(
-        text=script,
-        voice="Adam", 
-        model="eleven_multilingual_v2"
-    )
-    save(audio, filename)
-    print(f"🔥 Voiceover ready: {filename}")
-
-# --- Execution ---
-news = get_trending_ai_news()
-if news:
-    print(f"📰 Found News: {news['title']}")
-    script = generate_viral_script(news['title'])
-    print(f"✍️ Script Generated...")
-    text_to_speech(script, "daily_ai_update.mp3")
-else:
-    print("No fresh news found in the last 24h.")
+                                                                                                    - name: Run script
+                                                                                                            run: python main.py
+                                                                                                                    env:
+                                                                                                                              YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+                                                                                                                                        YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+                                                                                                                                                  YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+                                                                                                                                                            GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+                                                                                                                                                                      ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+                                                                                                                                                                      
