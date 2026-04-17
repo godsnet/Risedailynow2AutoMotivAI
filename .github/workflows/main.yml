@@ -2,7 +2,7 @@ name: AutoMotivAI Automation
 
 on:
   schedule:
-      - cron: '0 9 * * *' # 9 AM daily
+      - cron: '0 9 * * *'
         workflow_dispatch:
 
         jobs:
